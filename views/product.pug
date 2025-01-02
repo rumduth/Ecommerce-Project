@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title= `${product.brand} - ${product.type}`
+    link(rel="stylesheet" href="/css/product.css")
+  body
+    nav
+      .nav-left
+        ul
+          li: a(href="/") Home
+      .nav-right
+        ul
+          li: a(href="/login.html") Login
+          li: a(href="/signup.html") Sign Up
+    .container
+      .main-content
+        .product-detail
+          img(src=product.images, alt="Product Image")
+          .details
+            h2= product.brand
+            h3= product.type
+            p= product.description
+            span.favourites Favourites: #{product.favourites}
+            button.fav-button(onclick="addToFavorites(product._id)") Add to Favorites
+        h3.similar-products-title Similar Products
+        .similar-products
+          each similarProduct in similarProducts
+            .product-card
+              a(href=`/products/details/${similarProduct._id}`)
+                img(src=similarProduct.images, alt=`${similarProduct.type} image`)
+                .product-info
+                  h4= similarProduct.type
+                  p= `Brand: ${similarProduct.brand}`

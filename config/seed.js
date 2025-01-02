@@ -18,17 +18,17 @@ const seedProducts = async () => {
     const randomImage = `https://picsum.photos/200/300?random=${Math.floor(
       Math.random() * 1000
     )}`; // Use random image service    console.log(randomImage);
-
+    let randomDescription = faker.lorem.sentence();
     products.push({
       brand: randomBrand,
       type: randomType,
       images: randomImage,
+      description: randomDescription,
     });
   }
 
   // Insert products into the database
   await Product.insertMany(products);
-
   console.log("Database seeded with 30 products!");
 };
 

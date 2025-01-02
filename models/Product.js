@@ -26,6 +26,10 @@ const productSchema = new mongoose.Schema({
     default: 0,
     min: [0, "Favourites cannot be negative"], // Ensures no negative favourites
   },
+  description: {
+    type: String,
+    required: [true, "Product must have description"],
+  },
 });
 
 const Product = mongoose.model("Product", productSchema);

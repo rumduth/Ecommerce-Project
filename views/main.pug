@@ -1,0 +1,72 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        title Product Page
+        link(rel="stylesheet", href="/css/main.css")
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css")
+        script(src="/js/main.js" defer)
+    body
+        // Navigation Bar
+        nav
+            .nav-left
+                ul
+                    li: a(href="/") Home
+            .nav-right
+                ul
+                    li: a(href="/signup.html") Sign Up
+                    li: a(href="/login.html") Log in
+
+        // Main Container
+        .container
+            // Sidebar
+            .sidebar
+                .brands
+                    h3 Brands
+                    label
+                        input(type="checkbox", id="Apple", value="Apple", checked=brandsChecked && brandsChecked["Apple"] || false)
+                        | Apple
+                    label
+                        input(type="checkbox", id="Samsung", value="Samsung", checked=brandsChecked && brandsChecked["Samsung"] || false)
+                        | Samsung
+                    label
+                        input(type="checkbox", id="Microsoft", value="Microsoft", checked=brandsChecked && brandsChecked["Microsoft"] || false)
+                        | Microsoft
+                    label
+                        input(type="checkbox", id="Google", value="Google", checked=brandsChecked && brandsChecked["Google"] || false)
+                        | Google
+                    label
+                        input(type="checkbox", id="LG", value="LG", checked=brandsChecked && brandsChecked["LG"] || false)
+                        | LG
+
+                .types
+                    h3 Types
+                    label
+                        input(type="checkbox", id="Phone", value="Phone", checked=typesChecked && typesChecked["Phone"] || false)
+                        | Phone
+                    label
+                        input(type="checkbox", id="Laptop", value="Laptop", checked=typesChecked && typesChecked["Laptop"] || false)
+                        | Laptop
+                    label
+                        input(type="checkbox", id="Camera", value="Camera", checked=typesChecked && typesChecked["Camera"] || false)
+                        | Camera
+
+                button(id="filterBtn") Search
+
+            // Main Content Area
+            .main-content
+                .grid
+                    each product in products
+                        div.grid-item(data-types=product.type, data-brands=product.brand)
+                            img(src=product.images, alt=product.type)
+                            h4= product.brand + " - " + product.type
+                            p= product.description
+                            span.favourites Favourites: #{product.favourites}
+                            button.fav-button
+                                i.fa.fa-heart
+                                | Add to Favorites
+                            a(href= `/products/details/${product.id}`).details More details
+                .pagination
+                    button.prev-button(disabled=disabledBtns && disabledBtns.prevBtn ? true : null) Prev
+                    button.next-button(disabled=disabledBtns && disabledBtns.nextBtn ? true : null) Next
+

@@ -61,7 +61,6 @@ const validateRequestBody = (schema, isSignIn, signWithEmail) => {
         userInput.username = req.body.username;
         userInput.password = req.body.password;
       }
-      console.log(userInput);
       const { error, value } = schema.validate(userInput, {
         abortEarly: false,
       });
