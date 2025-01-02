@@ -5,6 +5,8 @@ html(lang="en")
         title Product Page
         link(rel="stylesheet", href="/css/main.css")
         link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css")
+        link(rel='stylesheet', href="/css/base.css")
+        script(src="/js/utility.js" defer)
         script(src="/js/main.js" defer)
     body
         // Navigation Bar
@@ -13,9 +15,14 @@ html(lang="en")
                 ul
                     li: a(href="/") Home
             .nav-right
-                ul
-                    li: a(href="/signup.html") Sign Up
-                    li: a(href="/login.html") Log in
+                if user
+                    ul 
+                        li Welcome back #{user.username}
+                        li: a.logout Log out
+                else
+                    ul
+                        li: a(href="/signup.html") Sign Up
+                        li: a(href="/login.html") Log in
 
         // Main Container
         .container

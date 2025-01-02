@@ -105,3 +105,46 @@ function createErrorSection(error) {
   }
   return errorDiv;
 }
+// Function to show a success notification
+function successRequestNotification(message) {
+  const notification = document.createElement("div");
+  notification.classList.add("notification", "success");
+  notification.textContent = message;
+
+  document.body.appendChild(notification);
+
+  // Make the notification appear
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 10);
+
+  // Remove the notification after 3 seconds
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => {
+      notification.remove();
+    }, 500); // Allow time for fade-out
+  }, 3000);
+}
+
+// Function to show a failure notification
+function failureRequestNotification(message) {
+  const notification = document.createElement("div");
+  notification.classList.add("notification", "failure");
+  notification.textContent = message;
+
+  document.body.appendChild(notification);
+
+  // Make the notification appear
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 10);
+
+  // Remove the notification after 3 seconds
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => {
+      notification.remove();
+    }, 500); // Allow time for fade-out
+  }, 3000);
+}

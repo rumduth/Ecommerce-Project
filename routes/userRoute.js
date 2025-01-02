@@ -27,5 +27,6 @@ router.post(
 
 // Define the route with the middleware
 router.post("/login", validateJoiObjectSignIn, controller.signIn);
+router.post("/logout", controller.logout);
 // router.post("/logout", controller)
 module.exports = router;
