@@ -61,6 +61,19 @@ const getAllProducts = async (req, res, next) => {
     const totalCount = await Product.countDocuments(filterObject);
     if (skip + limit >= totalCount) disabledBtns.nextBtn = true;
 
+    if (req.user) {
+      const faveList = {};
+      for (let id of req.user.productsFavorites)
+        faveList[id] = await Product.findById(id);
+      return res.status(200).render("main", {
+        products,
+        brandsChecked,
+        typesChecked,
+        disabledBtns,
+        faveList,
+      });
+    }
+
     res.status(200).render("main", {
       products,
       brandsChecked,
@@ -68,7 +81,7 @@ const getAllProducts = async (req, res, next) => {
       disabledBtns,
     });
   } catch (err) {
-    res.status(400).json({ err });
+    next(err);
   }
 };
 
@@ -76,15 +89,30 @@ const getProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
     let otherBrandProducts = await Product.find({ brand: product.brand });
     otherBrandProducts = otherBrandProducts.filter(
-      (el) => el.id !== product.id
+      (el) => el._id.toString() !== product._id.toString()
     );
-    res
-      .status(200)
-      .render("product", { product, similarProducts: otherBrandProducts });
+
+    let currentFav = false;
+    if (req.user) {
+      currentFav = req.user.productsFavorites.some(
+        (product_id) => product_id.toString() === id
+      );
+    }
+
+    res.status(200).render("product", {
+      product,
+      similarProducts: otherBrandProducts,
+      currentFav,
+    });
   } catch (err) {
-    res.status(400).json({ message: "Page not found" });
+    next(err);
   }
 };
 

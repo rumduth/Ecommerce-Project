@@ -1,0 +1,32 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Admin Page
+    link(rel="stylesheet", href="/css/admin.css")
+  body
+    header
+      h1 Admin Dashboard
+      nav
+        ul
+          li Admin - #{user.username}
+    main
+      h2 Users and Their Favorites
+      if users && users.length > 0
+        each user in users
+          section.user-details
+            h3= user.username
+            p Email: #{user.email}
+            if user.productsFavorites && user.productsFavorites.length > 0
+              ul
+                each product in user.productsFavorites
+                  li
+                    p Brand: #{product.brand}
+                    p Type: #{product.type}
+                    p Description: #{product.description}
+                    img(src=product.images, alt=`Image of ${product.brand} ${product.type}`)
+            else
+              p No favorite products found.
+      else
+        p No users found.

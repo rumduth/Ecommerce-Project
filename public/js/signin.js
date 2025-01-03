@@ -22,7 +22,7 @@ async function signInUser(username, password) {
     if (response.ok) {
       successRequestNotification("Succesfully Logged In");
       // Redirect to homepage after login
-      setTimeout(() => (window.location.href = "/"), 1500);
+      setTimeout(() => (window.location.href = "/"), 500);
     } else {
       // If login failed, handle the error (e.g., show error message)
       const error = await response.json();

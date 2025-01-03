@@ -142,3 +142,9 @@ nav {
   font-weight: bold;
   margin-bottom: 10px;
 }
+
+.fav-button:disabled {
+  background-color: #bdc3c7; /* Lighter grey */
+  cursor: not-allowed;
+  opacity: 0.6; /* Make it look less prominent */
+}

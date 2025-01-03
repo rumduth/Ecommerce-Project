@@ -18,7 +18,7 @@ const createUser = async function (req, res, next) {
     });
     res.status(201).json({ message: "Succesfully create the account" });
   } catch (err) {
-    res.status(404).json(err);
+    next(err);
   }
 };
 
@@ -71,13 +71,12 @@ const authenticate = async function (req, res, next) {
       }
 
       res.locals.user = await User.findById(decoded.id);
-
+      req.user = res.locals.user;
       // Call next() to pass control to the next middleware/route handler
       next();
     });
   } catch (error) {
-    console.error("Authentication error:", error);
-    return next(); // Handle any unexpected errors and proceed
+    return next(error); // Handle any unexpected errors and proceed
   }
 };
 
@@ -86,4 +85,76 @@ const logout = async function (req, res, next) {
   return res.status(200).json({ message: "Logout succesfully" });
 };
 
-module.exports = { createUser, signIn, authenticate, logout };
+const addOrRemoveFav = async function (req, res, next) {
+  try {
+    const { id } = req.body;
+    if (!req.user)
+      return res.status(404).json({ message: "You have to sign in first" });
+
+    let user = req.user;
+    let isExisted = false;
+
+    // Check if the product is already in the favorites list
+    for (let product_id of user.productsFavorites) {
+      if (product_id == id) {
+        isExisted = true;
+        break;
+      }
+    }
+
+    // If product exists, remove it from favorites
+    if (isExisted) {
+      user.productsFavorites = user.productsFavorites.filter((el) => el != id);
+    } else {
+      // Otherwise, add it to the favorites
+      user.productsFavorites.push(id);
+    }
+
+    // Save the updated user
+    await user.save();
+
+    // Return success message based on action
+    if (isExisted) {
+      res
+        .status(200)
+        .json({ message: "Removed from your favourite list successfully" });
+    } else {
+      res
+        .status(200)
+        .json({ message: "Added to your favourite list successfully" });
+    }
+  } catch (err) {
+    res.status(404).json(err);
+  }
+};
+
+const deleteAllFav = async function (req, res, next) {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "You have to sign in first" });
+    }
+    let user = req.user;
+    user.productsFavorites = []; // Clear the favorites array
+
+    // Save the updated user
+    await user.save();
+
+    // Return success message
+    res.status(200).json({ message: "Deleted all favorites successfully" });
+  } catch (err) {
+    console.error("Error deleting favorites:", err); // Log the error for debugging
+    res.status(500).json({
+      message: "An error occurred while deleting favorites",
+      error: err.message,
+    });
+  }
+};
+
+module.exports = {
+  createUser,
+  signIn,
+  authenticate,
+  logout,
+  addOrRemoveFav,
+  deleteAllFav,
+};

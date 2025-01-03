@@ -31,7 +31,7 @@ html
             h3= product.type
             p= product.description
             div.favourites Total Favorites: #{product.favourites}
-            button.fav-button(onclick="addToFavorites(product._id)") Add to Favorites
+            button(id=product.id disabled=(user ? false : true)).fav-button #{currentFav ? 'Remove from Favorites' : 'Add to Favorites'}
         h3.similar-products-title Similar Products
         .similar-products
           each similarProduct in similarProducts
@@ -41,3 +41,8 @@ html
                 .product-info
                   h4= similarProduct.type
                   p= `Brand: ${similarProduct.brand}`
+
+
+//- button(id= product.id disabled= user ? false : true).fav-button
+//-                                 i.fa.fa-heart
+//-                                 | #{user && faveList && faveList[product.id] ? 'Remove from Favorites' : 'Add to Favorites'}

@@ -10,7 +10,6 @@ const {
   validateRequestBody,
   validateJoiObjectSignIn,
 } = require("../utils/joi/userJoiSchema");
-const { off } = require("../models/User");
 
 router.post(
   "/signup",
@@ -28,5 +27,8 @@ router.post(
 // Define the route with the middleware
 router.post("/login", validateJoiObjectSignIn, controller.signIn);
 router.post("/logout", controller.logout);
+router.post("/fav", controller.addOrRemoveFav);
+router.post("/delete-all-fav", controller.deleteAllFav);
 // router.post("/logout", controller)
+
 module.exports = router;

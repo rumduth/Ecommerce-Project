@@ -1,10 +1,10 @@
 const express = require("express");
 const productRouter = require("./routes/productRoute");
 const userRouter = require("./routes/userRoute");
+const viewController = require("./controllers/viewController");
 const path = require("path"); // For handling paths
 const cookieParser = require("cookie-parser");
 const { authenticate } = require("./controllers/userController");
-const Product = require("./models/Product");
 const app = express();
 
 // Set the view engine to Pug
@@ -30,18 +30,17 @@ app.use(authenticate);
 app.use("/products", productRouter); // Routes for product-related requests
 app.use("/users", userRouter); // Routes for user-related requests
 
-// Default route (optional)
-app.get("/", async (req, res) => {
-  const products = await Product.find({}).skip(0).limit(9);
-  res.status(200).render("main", {
-    products,
-    disabledBtns: { prevBtn: true, nextBtn: false },
-  });
-});
+// app.get()
 
+// Default route (optional)
+app.get("/", viewController.getHomepage);
+app.get("/admin", viewController.getAdminPage);
+app.get("/user/*", (req, res) => {
+  res.redirect(301, "/");
+});
 // Handle 404 errors
 app.use((req, res) => {
-  res.status(404).json({ message: "Page not found" });
+  res.status(404).render("pagenotfound");
 });
 
 // Error handling middleware

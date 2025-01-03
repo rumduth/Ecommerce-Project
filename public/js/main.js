@@ -14,6 +14,7 @@ filterBtn.addEventListener("click", () => {
   types.forEach((type) => {
     if (type.checked) searchTypes.push(type.value);
   });
+
   brands.forEach((brand) => {
     if (brand.checked) brandTypes.push(brand.value);
   });
@@ -78,3 +79,87 @@ if (logoutBtn) {
     }
   });
 }
+
+document.querySelector(".grid").addEventListener("click", async (e) => {
+  try {
+    const baseUrl = window.location.origin;
+    const id = e.target.id;
+    const url = `${baseUrl}/users/fav`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }), //
+    });
+
+    // Check if the login was successful
+    if (response.ok) {
+      const data = await response.json();
+      successRequestNotification(data.message);
+      setTimeout(() => window.location.reload(), 1000);
+    } else {
+      // If login failed, handle the error (e.g., show error message)
+      const error = await response.json();
+      // failureRequestNotification("Action failed:" + error.message);
+    }
+  } catch (err) {
+    // failureRequestNotification("Action failed:" + err.message);
+  }
+});
+let favoriteSidebar = document.querySelector(".favorite-sidebar");
+favoriteSidebar &&
+  favoriteSidebar.addEventListener("click", async (e) => {
+    try {
+      const baseUrl = window.location.origin;
+      if (e.target.id === "clearFavorites") return;
+      const id = e.target.id;
+      const url = `${baseUrl}/users/fav`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }), //
+      });
+
+      // Check if the login was successful
+
+      if (response.ok) {
+        const data = await response.json();
+        successRequestNotification(data.message);
+        setTimeout(() => window.location.reload(), 1000);
+      } else {
+        // If login failed, handle the error (e.g., show error message)
+        const error = await response.json();
+        // failureRequestNotification("Action failed:" + error.message);
+      }
+    } catch (err) {
+      // failureRequestNotification("Action failed:" + err.message);
+    }
+  });
+
+let clearFavorite = document.querySelector("#clearFavorites");
+clearFavorite &&
+  clearFavorite.addEventListener("click", async (e) => {
+    try {
+      const baseUrl = window.location.origin;
+      const url = `${baseUrl}/users/delete-all-fav`;
+      const response = await fetch(url, {
+        method: "POST",
+      });
+
+      // Check if the request was successful
+      if (response.ok) {
+        const data = await response.json();
+        successRequestNotification(data.message);
+        setTimeout(() => window.location.reload(), 500);
+      } else {
+        // Handle failed request
+        const error = await response.json();
+        // failureRequestNotification("Action failed" + error.message);
+      }
+    } catch (err) {
+      // failureRequestNotification("Action failed 2" + err.message);
+    }
+  });

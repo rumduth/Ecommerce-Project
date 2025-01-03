@@ -18,15 +18,20 @@ html(lang="en")
                 if user
                     ul 
                         li Welcome back #{user.username}
+                        if user.role === 'admin'
+                            li 
+                                a(href='/admin') Go to Admin Page
                         li: a.logout Log out
                 else
                     ul
                         li: a(href="/signup.html") Sign Up
                         li: a(href="/login.html") Log in
+                        
+
 
         // Main Container
         .container
-            // Sidebar
+            // Sidebar (Filter Sidebar on the left)
             .sidebar
                 .brands
                     h3 Brands
@@ -69,11 +74,25 @@ html(lang="en")
                             h4= product.brand + " - " + product.type
                             p= product.description
                             span.favourites Favourites: #{product.favourites}
-                            button.fav-button
+                            button(id= product.id disabled= user ? false : true).fav-button
                                 i.fa.fa-heart
-                                | Add to Favorites
+                                | #{user && faveList && faveList[product.id] ? 'Remove from Favorites' : 'Add to Favorites'}
                             a(href= `/products/details/${product.id}`).details More details
                 .pagination
                     button.prev-button(disabled=disabledBtns && disabledBtns.prevBtn ? true : null) Prev
                     button.next-button(disabled=disabledBtns && disabledBtns.nextBtn ? true : null) Next
 
+            // Sidebar (Favorites Sidebar on the right)
+            if user && user.role !== 'admin'
+                .favorite-sidebar
+                    if faveList && Object.keys(faveList).length > 0
+                        h3 Your Favorites
+                        each product in faveList
+                            div.favorite-item
+                                img(src=product.images, alt=product.type)
+                                h4= product.brand + " - " + product.type
+                                a(href=`/products/details/${product.id}`).details View Details
+                                button(class="btn-delete" id= product.id) Delete
+                        button#clearFavorites Clear All Favorites
+                    else 
+                        h3 You have not liked any products

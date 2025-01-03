@@ -18,7 +18,7 @@ async function createUser(username, email, password, confirmPassword) {
       successRequestNotification("Succesfuly Sign Up");
       setTimeout(() => {
         window.location.href = "/";
-      }, 1500);
+      }, 500);
     } else {
       failureRequestNotification("Failed to create user.");
     }
