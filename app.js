@@ -21,10 +21,24 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Middleware for serving static files
+
+app.use(authenticate);
+
+// Redirect logged-in users from login.html and signup.html to the main page
+app.get("/login.html", (req, res) => {
+  if (req.user) return res.redirect(301, "/");
+  res.sendFile(path.join(__dirname, "public", "login.html")); // Serve the file manually if needed
+});
+
+app.get("/signup.html", (req, res) => {
+  if (req.user) return res.redirect(301, "/");
+  res.sendFile(path.join(__dirname, "public", "signup.html")); // Serve the file manually if needed
+});
+
+// Serve static files after the specific route handlers
 app.use(express.static(path.join(__dirname, "public")));
 
 // Use authentication middleware globally
-app.use(authenticate);
 
 // Mount routers
 app.use("/products", productRouter); // Routes for product-related requests
@@ -38,6 +52,7 @@ app.get("/admin", viewController.getAdminPage);
 app.get("/user/*", (req, res) => {
   res.redirect(301, "/");
 });
+
 // Handle 404 errors
 app.use((req, res) => {
   res.status(404).render("pagenotfound");

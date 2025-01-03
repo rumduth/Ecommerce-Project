@@ -31,6 +31,8 @@ favBtn &&
       const url = `${baseUrl}/users/fav`;
       const response = await fetch(url, {
         method: "POST",
+        credentials: "include",
+
         headers: {
           "Content-Type": "application/json",
         },

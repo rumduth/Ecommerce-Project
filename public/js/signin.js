@@ -12,6 +12,8 @@ async function signInUser(username, password) {
     // Send the POST request to the server with the user credentials
     const response = await fetch(url, {
       method: "POST", // POST method to authenticate the user
+      credentials: "include",
+
       headers: {
         "Content-Type": "application/json", // Send data as JSON
       },

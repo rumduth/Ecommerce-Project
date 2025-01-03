@@ -7,6 +7,8 @@ async function createUser(username, email, password, confirmPassword) {
 
     let response = await fetch(url, {
       method: "POST",
+      credentials: "include",
+
       headers: {
         "Content-Type": "application/json", // Set the Content-Type header
       },

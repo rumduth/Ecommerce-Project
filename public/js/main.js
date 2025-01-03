@@ -64,6 +64,7 @@ if (logoutBtn) {
       const url = `${baseUrl}/users/logout`; // Form the logout URL
       let response = await fetch(url, {
         method: "POST",
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -87,6 +88,7 @@ document.querySelector(".grid").addEventListener("click", async (e) => {
     const url = `${baseUrl}/users/fav`;
     const response = await fetch(url, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -117,6 +119,8 @@ favoriteSidebar &&
       const url = `${baseUrl}/users/fav`;
       const response = await fetch(url, {
         method: "POST",
+        credentials: "include",
+
         headers: {
           "Content-Type": "application/json",
         },
@@ -147,6 +151,7 @@ clearFavorite &&
       const url = `${baseUrl}/users/delete-all-fav`;
       const response = await fetch(url, {
         method: "POST",
+        credentials: "include",
       });
 
       // Check if the request was successful
